@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Songs with Controls</title>
+    <style>
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .controls button {
+            cursor: pointer;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Music Collection</h1>
+
+    <div class="controls">
+        <button id="prev">⏮️</button>
+        <button id="playPause">⏯️</button>
+        <button id="next">⏭️</button>
+    </div>
+
+    <audio id="audioPlayer">
+        <source id="mp3Source" src="./WhatsApp Audio 2024-06-07 at 9.59.17 AM.mpeg" type="audio/mpeg">
+        <source id="oggSource" src="./vaaney vaaney song.mpeg" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        const songs = [
+            { mp3: 'song1.mp3', ogg: 'song1.ogg' },
+            { mp3: 'song2.mp3', ogg: 'song2.ogg' },
+            { mp3: 'song3.mp3', ogg: 'song3.ogg' }
+        ];
+
+        let currentSongIndex = 0;
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playPauseButton = document.getElementById('playPause');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const mp3Source = document.getElementById('mp3Source');
+        const oggSource = document.getElementById('oggSource');
+
+        function loadSong(index) {
+            mp3Source.src = songs[index].mp3;
+            oggSource.src = songs[index].ogg;
+            audioPlayer.load();
+        }
+
+        function playPause() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playPauseButton.textContent = '⏸️';
+            } else {
+                audioPlayer.pause();
+                playPauseButton.textContent = '▶️';
+            }
+        }
+
+        function playNext() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            loadSong(currentSongIndex);
+            audioPlayer.play();
+            playPauseButton.textContent = '⏸️';
+        }
+
+        function playPrev() {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            loadSong(currentSongIndex);
+            audioPlayer.play();
+            playPauseButton.textContent = '⏸️';
+        }
+
+        playPauseButton.addEventListener('click', playPause);
+        nextButton.addEventListener('click', playNext);
+        prevButton.addEventListener('click', playPrev);
+
+        // Load the first song initially
+        loadSong(currentSongIndex);
+    </script>
+</body>
+</html>
